@@ -1,5 +1,7 @@
 package org.example;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Stack;
 
 public class BracketChecker {
@@ -22,7 +24,7 @@ public class BracketChecker {
         return openIdx == closeIdx && openIdx != -1;
     }
 
-    public boolean isCorrectBracketString(String brackets) {
+    public boolean isCorrectBracketString(@NotNull String brackets) {
         for (int i = 0; i < brackets.length(); i++) {
             char bracket = brackets.charAt(i);
 
