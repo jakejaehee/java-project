@@ -1,4 +1,4 @@
-package org.example;
+package org.jake.algorithm;
 
 public class HelloWorld {
     public static void main(String[] args) {

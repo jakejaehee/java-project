@@ -1,4 +1,4 @@
-package org.example;
+package org.jake.algorithm;
 
 import java.util.LinkedList;
 import java.util.Stack;

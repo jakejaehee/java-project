@@ -1,4 +1,4 @@
-package org.example;
+package org.jake.algorithm;
 
 import org.jetbrains.annotations.NotNull;
 
