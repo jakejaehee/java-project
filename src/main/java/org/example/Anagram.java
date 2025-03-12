@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Anagram {
@@ -40,8 +41,40 @@ public class Anagram {
         return true;
     }
 
+    private static List<Integer> findAnagram(String haystack, String needle) {
+        List<Integer> indices = new LinkedList<Integer>();
+
+        char[] arrH = haystack.toCharArray();
+        char[] arrN = needle.toCharArray();
+        Arrays.sort(arrN);
+
+        for (int i = 0; i <= arrH.length - arrN.length; i++) {
+            char[] arrHSub = new char[arrN.length];
+            System.arraycopy(arrH, i, arrHSub, 0, arrN.length);
+            Arrays.sort(arrHSub);
+
+            int j = 0;
+            for (; j < arrN.length; j++) {
+                if (arrHSub[j] != arrN[j]) {
+                    break;
+                }
+            }
+            if (j == arrN.length) {
+                indices.add(i);
+            }
+        }
+
+        return indices;
+    }
+
     public static void main(String[] args) {
-        System.out.println(getAnagramIndices("abcde", "ed"));
+        String haystack = "abcde";
+        String needle = "ed";
+
+        System.out.println(getAnagramIndices(haystack, needle));
+
+        List<Integer> indices = findAnagram(haystack, needle);
+        System.out.println(indices);
     }
 }
 

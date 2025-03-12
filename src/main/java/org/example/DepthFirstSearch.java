@@ -71,9 +71,9 @@ public class DepthFirstSearch {
         System.out.println(vertex.getValue());
         vertex.setVisited();
 
-        while (vertex.getAdjacents().isEmpty() == false) {
-            Vertex adjacent = vertex.getAdjacents().pop();
-            traverse1(adjacent);
+        for (int i = 0; i < vertex.getAdjacents().size(); i++) {
+            Vertex adjacent = vertex.getAdjacents().get(i);
+            traverse2(adjacent);
         }
     }
 
@@ -86,14 +86,15 @@ public class DepthFirstSearch {
 
         while (vertex != null) {
             Vertex adjacent = null;
-            while (vertex.getAdjacents().isEmpty() != true) {
-                adjacent = vertex.getAdjacents().poll();
+            for (int i = 0; i < vertex.getAdjacents().size(); i++) {
+                adjacent = vertex.getAdjacents().get(i);
                 if (adjacent.isVisited()) {
                     continue;
                 }
                 System.out.println(adjacent.getValue());
                 stack.push(adjacent);
                 adjacent.setVisited();
+                break;
             }
 
             Vertex previousVertex = null;
