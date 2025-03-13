@@ -185,54 +185,38 @@ public class BinarySearchTree {
         }
     }
 
-    int maxDepth = 0;
-
-    public void horizentalOrderTraverse() {
+    public void horizontalOrderTraverse() {
         if (root == null) return;
-        maxDepth = 0;
-        HashMap<Integer, List<Node>> depthMap = new HashMap<Integer, List<Node>>();
-        markDepth(root, depthMap, 0);
-        for (int i = 0; i <= maxDepth; i++) {
-            List<Node> list = depthMap.get(i);
-            if (list != null && list.size() > 0) {
-                for (Node node : list) {
-                    System.out.print(node.value + " ");
-                }
+
+        LinkedList<Node> queue = new LinkedList<Node>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+            System.out.print(node.value + " ");
+
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
             }
         }
-    }
-
-    private void markDepth(Node node, HashMap<Integer, List<Node>> depthMap, int depth) {
-        if (node == null) return;
-        List<Node> list = depthMap.get(depth);
-        if (list == null) {
-            list = new LinkedList<Node>();
-            depthMap.put(depth, list);
-        }
-        list.add(node);
-        if (maxDepth < depth) {
-            maxDepth = depth;
-        }
-        markDepth(node.left, depthMap, depth + 1);
-        markDepth(node.right, depthMap, depth + 1);
     }
 
     public void search(int value) {
-        Node curr = root;
-        if (root != null) {
-            while (curr != null && curr.value != value) {
-                if (curr.value > value) {
-                    curr = curr.left;
-                } else {
-                    curr = curr.right;
-                }
+        Node current = root;
+        while (current != null) {
+            if (current.value == value) {
+                System.out.println("Found: " + value);
+                return;
+            } else if (current.value > value) {
+                current = current.left;
+            } else {
+                current = current.right;
             }
         }
-        if (curr != null) {
-            System.out.println("Found: " + value);
-        } else {
-            System.out.println("Not found: " + value);
-        }
+        System.out.println("Not found: " + value);
     }
 
     public static void main(String[] args) {
@@ -253,7 +237,7 @@ public class BinarySearchTree {
         bst.verticalOrderTraverse();
 
         System.out.print("\nHorizental Order: ");
-        bst.horizentalOrderTraverse();
+        bst.horizontalOrderTraverse();
 
         System.out.println("\nSearch: ");
         bst.search(8);
