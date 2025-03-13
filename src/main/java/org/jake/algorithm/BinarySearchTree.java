@@ -27,24 +27,12 @@ import java.util.*;
  *    \
  *     0
  *
- * inOrderTraverse: -8 0 2 3 6 8 8 9 10
- * preorderTraverse: 8 3 2 -8 0 6 9 8 10
- * postorderTraverse: 0 -8 2 6 3 8 10 9 8
- * Vertical Order:
- * -8
- * 2 0
- * 3
- * 8 6 8
- * 9
- * 10
- *
- * Horizental Order:
- * 8
- * 3 9
- * 2 6 8 10
- * -8
- * 0
- *
+ * In Order: -8 0 2 3 6 8 8 9 10
+ * Preorder: 8 3 2 -8 0 6 9 8 10
+ * Postorder: 0 -8 2 6 3 8 10 9 8
+ * Vertical Order: -8 0 2 3 6 8 8 9 10
+ * Horizental Order: 8 3 9 2 6 8 10 -8 0
+ * Search:
  * Found: 8
  * Found: 6
  * Not found: 7
@@ -210,7 +198,6 @@ public class BinarySearchTree {
                 for (Node node : list) {
                     System.out.print(node.value + " ");
                 }
-                System.out.println();
             }
         }
     }
@@ -253,19 +240,19 @@ public class BinarySearchTree {
         bst.insertBulk("8 3 2 9 -8 10 8 0 6");
         //bst.insertBulk("8 3 2 9 10 0 6");
 
-        System.out.println("\nIn Order: ");
+        System.out.print("\nIn Order: ");
         bst.inOrderTraverseFrom(bst.root);
 
-        System.out.println("\nPreorder: ");
+        System.out.print("\nPreorder: ");
         bst.preorderTraverseFrom(bst.root);
 
-        System.out.println("\nPostorder: ");
+        System.out.print("\nPostorder: ");
         bst.postorderTraverseFrom(bst.root);
 
-        System.out.println("\nVertical Order: ");
+        System.out.print("\nVertical Order: ");
         bst.verticalOrderTraverse();
 
-        System.out.println("\nHorizental Order: ");
+        System.out.print("\nHorizental Order: ");
         bst.horizentalOrderTraverse();
 
         System.out.println("\nSearch: ");
