@@ -70,7 +70,7 @@ public class BreadthFirstSearch {
     public static void traverse1(LinkedList<Vertex> adjacents) {
         LinkedList<Vertex> queue = new LinkedList<Vertex>();
         while (adjacents.isEmpty() != true) {
-            Vertex adjacent = adjacents.pop();
+            Vertex adjacent = adjacents.poll();
             if (adjacent.isVisited()) {
                 continue;
             }

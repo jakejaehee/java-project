@@ -1,8 +1,6 @@
 package org.jake.algorithm;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Case 1)
@@ -99,72 +97,108 @@ public class BinarySearchTree {
         }
     }
 
-    public void inOrderTraverse() {
-        inOrderTraverseFrom(root);
-        System.out.println();
-    }
-
     private void inOrderTraverseFrom(Node node) {
         if (node == null) return;
         inOrderTraverseFrom(node.left);
         System.out.print(node.value + " ");
         inOrderTraverseFrom(node.right);
     }
-    public void preorderTraverse() {
-        preorderTraverseFrom(root);
-        System.out.println();
-    }
+
     private void preorderTraverseFrom(Node node) {
         if (node == null) return;
         System.out.print(node.value + " ");
         preorderTraverseFrom(node.left);
         preorderTraverseFrom(node.right);
     }
-    public void postorderTraverse() {
-        postorderTraverseFrom(root);
-        System.out.println();
-    }
+
     private void postorderTraverseFrom(Node node) {
         if (node == null) return;
         postorderTraverseFrom(node.left);
         postorderTraverseFrom(node.right);
         System.out.print(node.value + " ");
     }
+
     private int minHD = 0;
     private int maxHD = 0;
+
+    class Tuple {
+        public Node node;
+        public int x;
+
+        public Tuple(Node node, int x) {
+            this.node = node;
+            this.x = x;
+        }
+    }
+
     public void verticalOrderTraverse() {
-        if (root == null) return;
-        minHD = 0;
-        maxHD = 0;
-        HashMap<Integer, List<Node>> hdMap = new HashMap<Integer, List<Node>>();
-        markHD(root, hdMap, 0);
-        for (int i = minHD; i <= maxHD; i++) {
-            List<Node> list = hdMap.get(i);
-            if (list != null && list.size() > 0) {
-                for (Node node : list) {
-                    System.out.print(node.value + " ");
+        if (root == null) {
+            return;
+        }
+
+        LinkedList<Tuple> queue = new LinkedList<Tuple>();
+        Map<Integer, LinkedList<Integer>> map = new HashMap<Integer, LinkedList<Integer>>();
+        int minX = 0;
+        int maxX = 0;
+
+        queue.add(new Tuple(root, 0));
+        LinkedList<Integer> rootValues = new LinkedList<Integer>();
+        rootValues.add(root.value);
+        map.put(0, rootValues);
+
+        while (!queue.isEmpty()) {
+            Tuple tuple = queue.poll();
+
+            if (tuple.node.left != null) {
+                int x = tuple.x - 1;
+                queue.add(new Tuple(tuple.node.left, x));
+
+                LinkedList<Integer> values = map.get(x);
+                if (values == null) {
+                    values = new LinkedList<Integer>();
+                    map.put(x, values);
                 }
-                System.out.println();
+                values.add(tuple.node.left.value);
+
+                map.put(x, values);
+                if (minX > x) {
+                    minX = x;
+                }
+            }
+            if (tuple.node.right != null) {
+                int x = tuple.x + 1;
+                queue.add(new Tuple(tuple.node.right, x));
+
+                LinkedList<Integer> values = map.get(x);
+                if (values == null) {
+                    values = new LinkedList<Integer>();
+                    map.put(x, values);
+                }
+                values.add(tuple.node.right.value);
+
+                map.put(x, values);
+                if (maxX < x) {
+                    maxX = x;
+                }
+            }
+        }
+
+        for (int x = minX; x <= maxX; x++) {
+            LinkedList<Integer> values = map.get(x);
+            values.sort(new Comparator<Integer>() {
+                public int compare(Integer i1, Integer i2) {
+                    return i1 - i2;
+                }
+            });
+
+            for (int value : values) {
+                System.out.print(value + " ");
             }
         }
     }
-    private void markHD(Node node, HashMap<Integer, List<Node>> hdMap, int hd) {
-        if (node == null) return;
-        List<Node> list = hdMap.get(hd);
-        if (list == null) {
-            list = new LinkedList<Node>();
-            hdMap.put(hd, list);
-        }
-        list.add(node);
-        if (minHD > hd) {
-            minHD = hd;
-        } else if (maxHD < hd) {
-            maxHD = hd;
-        }
-        markHD(node.left, hdMap, hd - 1);
-        markHD(node.right, hdMap, hd + 1);
-    }
+
     int maxDepth = 0;
+
     public void horizentalOrderTraverse() {
         if (root == null) return;
         maxDepth = 0;
@@ -180,6 +214,7 @@ public class BinarySearchTree {
             }
         }
     }
+
     private void markDepth(Node node, HashMap<Integer, List<Node>> depthMap, int depth) {
         if (node == null) return;
         List<Node> list = depthMap.get(depth);
@@ -194,6 +229,7 @@ public class BinarySearchTree {
         markDepth(node.left, depthMap, depth + 1);
         markDepth(node.right, depthMap, depth + 1);
     }
+
     public void search(int value) {
         Node curr = root;
         if (root != null) {
@@ -211,6 +247,36 @@ public class BinarySearchTree {
             System.out.println("Not found: " + value);
         }
     }
+
+    public static void main(String[] args) {
+        BinarySearchTree bst = new BinarySearchTree();
+        bst.insertBulk("8 3 2 9 -8 10 8 0 6");
+        //bst.insertBulk("8 3 2 9 10 0 6");
+
+        System.out.println("\nIn Order: ");
+        bst.inOrderTraverseFrom(bst.root);
+
+        System.out.println("\nPreorder: ");
+        bst.preorderTraverseFrom(bst.root);
+
+        System.out.println("\nPostorder: ");
+        bst.postorderTraverseFrom(bst.root);
+
+        System.out.println("\nVertical Order: ");
+        bst.verticalOrderTraverse();
+
+        System.out.println("\nHorizental Order: ");
+        bst.horizentalOrderTraverse();
+
+        System.out.println("\nSearch: ");
+        bst.search(8);
+        bst.search(6);
+        bst.search(7);
+        bst.search(0);
+        bst.search(-8);
+        bst.search(-6);
+    }
+
     public void remove(int value) {
         Node parent = null;
         Node curr = root;
@@ -272,6 +338,7 @@ public class BinarySearchTree {
             }
         }
     }
+
     private Node getReplacement(Node node) {
         Node parent = null;
         Node ret = node;
@@ -284,35 +351,6 @@ public class BinarySearchTree {
             ret.right = node;
         }
         return ret;
-    }
-
-    public static void main(String[] args) {
-        BinarySearchTree bst = new BinarySearchTree();
-        bst.insertBulk("8 3 2 9 -8 10 8 0 6");
-        //bst.insertBulk("8 3 2 9 10 0 6");
-
-        System.out.println("\nIn Order: ");
-        bst.inOrderTraverse();
-
-        System.out.println("\nPreorder: ");
-        bst.preorderTraverse();
-
-        System.out.println("\nPostorder: ");
-        bst.postorderTraverse();
-
-        System.out.println("\nVertical Order: ");
-        bst.verticalOrderTraverse();
-
-        System.out.println("\nHorizental Order: ");
-        bst.horizentalOrderTraverse();
-
-        System.out.println("\nSearch: ");
-        bst.search(8);
-        bst.search(6);
-        bst.search(7);
-        bst.search(0);
-        bst.search(-8);
-        bst.search(-6);
     }
 }
 
