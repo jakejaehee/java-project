@@ -56,8 +56,11 @@ public class ZerofyMatrix {
 
     public static void main (String[] args) {
         int[][] matrix = {{1, 2, 3}, {4, 5, 0}, {7, 0, 0}, {10, 11, 12}};
+        System.out.println("Original matrix:");
         printMatrix(matrix);
+
         System.out.println();
+        System.out.println("Zerofied matrix:");
         printMatrix(zerofy(matrix));
     }
 }
